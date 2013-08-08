@@ -327,12 +327,6 @@ Puppet.prototype = {
       this.onswitchedY = y;
     }
     //console.log(y, method, dict);
-    
-    if(y > 3600){
-      this.holl.gotoAndStop(1);
-    } else {
-      this.holl.gotoAndStop(0);
-    }
 
     this[method](y, stage);
     this.prevStage = stage;
@@ -449,6 +443,12 @@ Puppet.prototype = {
       this.sprite.y = 100;
     }
 
+    var samba = this.sprite.clone();
+    stage.addChild(samba);
+    samba.x = 320;
+    samba.y = 100;
+    samba.gotoAndStop(29);
+
     this.drawHoleFunc(this.holl, this.sprite);
     this.sprite.gotoAndStop(frame > 27 ? 27 : frame);
   },
@@ -461,18 +461,20 @@ Puppet.prototype = {
     
     return function(holl, sprite){
       if(sprite.y < 2540){
+        this.holl.gotoAndStop(0);
         holl.y = sprite.y + 50;
         g.clear();
         g.beginBitmapFill(img);
         g.drawRect (0,0, 60, sprite.y + 50);
       } else {
+        this.holl.gotoAndStop(1);
+        holl.y = 2590;
         g.clear();
         g.beginBitmapFill(img);
         g.drawRect (0,0, 60, 2590);
       }
     }
   }
-
 }
 
 var App = function(){
