@@ -275,8 +275,7 @@ Puppet.prototype = {
         stage = dict["c5"];
         break;
       case y < 4500 : method = "dig";
-        var sy = (y-2300)/150 | 0;
-        stage = dict["c"+(6+sy)];
+        stage = dict["c6"];
         break;
       default       : method = "walk";     break;
     }
@@ -395,14 +394,10 @@ Puppet.prototype = {
     this.counter();
   },
   dig: function(y){
-    var step = (y-2300)/3 | 0;
-    step = step < 0 ? 0 : step;
-
-    this.sprite.x =430; 
-    this.sprite.y = (-60 + 6*step)%300;
-    this.sprite.gotoAndStop(16+ ( step /8 | 0 )%2);
-
-//    this.counter();
+    var step = (y-2300)
+    this.sprite.x = 30;
+    this.sprite.y = (-60 + 2*step);
+    this.sprite.gotoAndStop(16+ ( step /20 | 0 )%2);
   },
   out: function(y){
   }

@@ -154,6 +154,7 @@ img {
 
 .bnr.bnr07{
   top: 2560px;
+  left: 215px;
 }
 
 .bnr .bnr-inner {
@@ -163,7 +164,6 @@ img {
 }
 
 canvas {
-  //background: #fee;
   display: block;
 }
 .underground {
