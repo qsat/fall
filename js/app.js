@@ -216,7 +216,7 @@ Puppet.prototype = {
         "height": 182
       },
       animations: {
-        "water": [0, 5]
+        "water": [0, 5], "holl" : []
       }
     });
 
@@ -227,6 +227,27 @@ Puppet.prototype = {
     this.water.y = 0;
 
     this.waterSpriteSheet = waterSpriteSheet;
+
+    hollSpriteSheet = new createjs.SpriteSheet({
+      images: ["img/hole01.png"],
+      frames: {
+        "regX": 30,
+        "regY": 0,
+        "width":60,
+        "height": 60
+      },
+      animations: {
+        "holl": [0, 1]
+      }
+    });
+
+    this.holl = new createjs.BitmapAnimation(hollSpriteSheet);
+
+    this.holl.gotoAndStop("holl");
+    this.holl.x = 0;
+    this.holl.y = 0;
+
+    this.hollSpriteSheet = hollSpriteSheet;
 
 /*
 ----------------------------------------ソン ↑
@@ -287,6 +308,10 @@ Puppet.prototype = {
       stage.addChild(this.water);
     }
 
+    if (method === "dig") {
+      stage.addChildAt(this.holl, 0);
+    }
+
 /*
 ----------------------------------------ソン ↑
 */
@@ -299,7 +324,7 @@ Puppet.prototype = {
     }
 //console.log(y, method, dict);
     
-    this[method](y);
+    this[method](y, stage);
     this.prevStage = stage;
   },
 
@@ -393,11 +418,28 @@ Puppet.prototype = {
 
     this.counter();
   },
-  dig: function(y){
+  dig: function(y, stage){
     var step = (y-2300)
     this.sprite.x = 30;
     this.sprite.y = (-60 + 2*step);
     this.sprite.gotoAndStop(16+ ( step /20 | 0 )%2);
+
+
+    if(this.holl.y > 2575){
+      this.holl.gotoAndStop(1);
+    } else {
+      this.holl.gotoAndStop(0);
+    }
+
+    this.holl.x = this.sprite.x;
+    if(this.holl.y < this.sprite.y + 50 && this.sprite.y < 2540){
+      this.holl.y = this.sprite.y + 50;
+      var g = new createjs.Graphics();
+      g.beginBitmapFill(img);
+      g.drawRect (0,0, 60, this.sprite.y + 50);
+      var s = new createjs.Shape(g);    
+      stage.addChildAt(s, 0);
+    }    
   },
   out: function(y){
   }
@@ -423,6 +465,9 @@ App.prototype = {
   }
 
 }
+
+var img = new Image();
+img.src="img/hole.png";
 
 app = new App();
 
