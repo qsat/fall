@@ -355,7 +355,7 @@ Puppet.prototype = {
       if(this.sprite.y > 158){
         this.water.x = this.sprite.x; 
         this.water.y = 245;
-        this.water.gotoAndStop(( step /10 | 0 )%6);
+        this.water.gotoAndStop(( step /8 | 0 )%6);
       }
     } else{
       this.water.gotoAndStop(-1);
