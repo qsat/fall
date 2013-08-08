@@ -164,6 +164,7 @@ img {
 
 canvas {
   //background: #fee;
+  display: block;
 }
 .underground {
   display: none;

@@ -110,11 +110,13 @@ CanvasManager.prototype = {
       this.topY = $this.offset().top - scrollTop;
       this.bottomY = this.topY + $this.height();
 
+
       if(! this.stage){
         this.stage = new createjs.Stage( $this.attr("id") );
         this.stage.cname = "c"+i;
         this.stage.el = this;
       }
+      console.log(this.stage.cname, this.topY);
       dict[this.stage.cname] = this.stage;
       return this.stage;
     });
@@ -201,6 +203,35 @@ Puppet.prototype = {
     this.sprite.y = 60;
 
     this.spriteSheet = spriteSheet;
+
+/*
+----------------------------------------ソン ↓
+*/
+    waterSpriteSheet = new createjs.SpriteSheet({
+      images: ["img/water.png"],
+      frames: {
+        "regX": 192,
+        "regY": 182,
+        "width":384,
+        "height": 182
+      },
+      animations: {
+        "water": [0, 5]
+      }
+    });
+
+    this.water = new createjs.BitmapAnimation(waterSpriteSheet);
+
+    this.water.gotoAndStop("water");
+    this.water.x = 0;
+    this.water.y = 0;
+
+    this.waterSpriteSheet = waterSpriteSheet;
+
+/*
+----------------------------------------ソン ↑
+*/
+
   },
 
   onUnderground: function(){
@@ -244,11 +275,23 @@ Puppet.prototype = {
         stage = dict["c5"];
         break;
       case y < 4500 : method = "dig";
-        var sy = (y-4500)/300 | 0;
+        var sy = (y-2300)/150 | 0;
         stage = dict["c"+(6+sy)];
         break;
       default       : method = "walk";     break;
     }
+/*
+----------------------------------------ソン ↓
+*/
+
+    if (method === "falling3") {
+      stage.addChild(this.water);
+    }
+
+/*
+----------------------------------------ソン ↑
+*/
+
 
 
     if(stage && this.prevStage != stage){
@@ -301,6 +344,26 @@ Puppet.prototype = {
     this.sprite.x =430; 
     this.sprite.y = -60 + step *4;
     this.sprite.gotoAndStop(8 + ( step /15 | 0 )%2);
+
+/*
+----------------------------------------ソン ↓
+*/
+
+
+    if (this.sprite.y > 138) {
+      this.sprite.gotoAndStop(10 + ( step /15 | 0 )%2);
+      if(this.sprite.y > 158){
+        this.water.x = this.sprite.x; 
+        this.water.y = 245;
+        this.water.gotoAndStop(( step /10 | 0 )%6);
+      }
+    } else{
+      this.water.gotoAndStop(-1);
+    }
+    
+/*
+----------------------------------------ソン ↑
+*/
   },
   swim:function(y){
     var step = (y-1500)/3 | 0;
@@ -336,7 +399,7 @@ Puppet.prototype = {
     step = step < 0 ? 0 : step;
 
     this.sprite.x =430; 
-    this.sprite.y = -60 + 6*step;
+    this.sprite.y = (-60 + 6*step)%300;
     this.sprite.gotoAndStop(16+ ( step /8 | 0 )%2);
 
 //    this.counter();
