@@ -248,7 +248,6 @@ Puppet.prototype = {
     this.holl.y = 0;
 
     this.hollSpriteSheet = hollSpriteSheet;
-
 /*
 ----------------------------------------ソン ↑
 */
@@ -314,6 +313,8 @@ Puppet.prototype = {
     if (method === "dig") {
       stage.addChildAt(this.holl, 0);
     }
+    
+    if(! this.drawHoleFunc) this.drawHoleFunc = this.drawHole();
 
 /*
 ----------------------------------------ソン ↑
@@ -325,8 +326,14 @@ Puppet.prototype = {
       stage.addChild(this.sprite);
       this.onswitchedY = y;
     }
-console.log(y, method, dict);
+    //console.log(y, method, dict);
     
+    if(y > 3600){
+      this.holl.gotoAndStop(1);
+    } else {
+      this.holl.gotoAndStop(0);
+    }
+
     this[method](y, stage);
     this.prevStage = stage;
   },
@@ -427,22 +434,9 @@ console.log(y, method, dict);
     this.sprite.y = (-60 + 2*step);
     this.sprite.gotoAndStop(16+ ( step /20 | 0 )%2);
 
-
-    if(this.holl.y > 2575){
-      this.holl.gotoAndStop(1);
-    } else {
-      this.holl.gotoAndStop(0);
-    }
-
+    this.drawHoleFunc(this.holl, this.sprite);
     this.holl.x = this.sprite.x;
-    if(this.holl.y < this.sprite.y + 50 && this.sprite.y < 2540){
-      this.holl.y = this.sprite.y + 50;
-      var g = new createjs.Graphics();
-      g.beginBitmapFill(img);
-      g.drawRect (0,0, 60, this.sprite.y + 50);
-      var s = new createjs.Shape(g);    
-      stage.addChildAt(s, 0);
-    }    
+
   },
   out: function(y, stage){
     var step = (y-3625);
@@ -452,6 +446,21 @@ console.log(y, method, dict);
 
 
     this.sprite.gotoAndStop(18+ ( step /13 | 0 )%11);
+  },
+  drawHole: function(){
+    var g = new createjs.Graphics();
+    var s = new createjs.Shape(g);
+    var stage = app.canvasManager.dict["c6"];
+
+    stage.addChildAt(s, 0);
+    
+    return function(holl, sprite){
+      if(holl.y < sprite.y + 50 && sprite.y < 2540){
+        holl.y = sprite.y + 50;
+        g.beginBitmapFill(img);
+        g.drawRect (0,0, 60, sprite.y + 50);
+      }    
+    }
   }
 
 }
