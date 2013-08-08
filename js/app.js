@@ -444,7 +444,7 @@ Puppet.prototype = {
     if(y < 3700) this.sprite.y = 2600 + 260 * Math.sin(step/28);
     else this.sprite.y = 2680;
 
-
+    this.drawHoleFunc(this.holl, this.sprite);
     this.sprite.gotoAndStop(18+ ( step /13 | 0 )%11);
   },
   drawHole: function(){
@@ -455,11 +455,16 @@ Puppet.prototype = {
     stage.addChildAt(s, 0);
     
     return function(holl, sprite){
-      if(holl.y < sprite.y + 50 && sprite.y < 2540){
+      if(sprite.y < 2540){
         holl.y = sprite.y + 50;
+        g.clear();
         g.beginBitmapFill(img);
         g.drawRect (0,0, 60, sprite.y + 50);
-      }    
+      } else {
+        g.clear();
+        g.beginBitmapFill(img);
+        g.drawRect (0,0, 60, 2590);
+      }
     }
   }
 
