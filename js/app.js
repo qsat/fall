@@ -294,11 +294,11 @@ Puppet.prototype = {
       case y < 2300 : method = "swim3";
         stage = dict["c5"];
         break;
-      case y < 3625 : method = "dig";
+      case y < 3645 : method = "dig";
         stage = dict["c6"];
         break;
       case y < 6000 : method = "out";
-        stage = dict["c6"];
+        stage = dict["c7"];
         break;
       default       : method = "walk";     break;
     }
@@ -439,13 +439,18 @@ Puppet.prototype = {
 
   },
   out: function(y, stage){
-    var step = (y-3625);
-    this.sprite.x = 30;
-    if(y < 3700) this.sprite.y = 2600 + 260 * Math.sin(step/28);
-    else this.sprite.y = 2680;
+    var step = (y-3645),
+        frame = 18+ ( step /10 | 0 );
+    if(y < 3700) {
+      this.sprite.x = 460-(step);
+      this.sprite.y = 40+260 * Math.sin(step/18.5);
+    } else {
+      this.sprite.x = 380;
+      this.sprite.y = 100;
+    }
 
     this.drawHoleFunc(this.holl, this.sprite);
-    this.sprite.gotoAndStop(18+ ( step /13 | 0 )%11);
+    this.sprite.gotoAndStop(frame > 27 ? 27 : frame);
   },
   drawHole: function(){
     var g = new createjs.Graphics();
