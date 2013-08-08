@@ -274,7 +274,10 @@ Puppet.prototype = {
       case y < 2300 : method = "swim3";
         stage = dict["c5"];
         break;
-      case y < 4500 : method = "dig";
+      case y < 3625 : method = "dig";
+        stage = dict["c6"];
+        break;
+      case y < 6000 : method = "out";
         stage = dict["c6"];
         break;
       default       : method = "walk";     break;
@@ -297,9 +300,9 @@ Puppet.prototype = {
       stage.addChild(this.sprite);
       this.onswitchedY = y;
     }
-//console.log(y, method, dict);
+console.log(y, method, dict);
     
-    this[method](y);
+    this[method](y, stage);
     this.prevStage = stage;
   },
 
@@ -399,7 +402,14 @@ Puppet.prototype = {
     this.sprite.y = (-60 + 2*step);
     this.sprite.gotoAndStop(16+ ( step /20 | 0 )%2);
   },
-  out: function(y){
+  out: function(y, stage){
+    var step = (y-3625);
+    this.sprite.x = 30;
+    if(y < 3700) this.sprite.y = 2600 + 260 * Math.sin(step/28);
+    else this.sprite.y = 2680;
+
+
+    this.sprite.gotoAndStop(18+ ( step /13 | 0 )%11);
   }
 
 }
