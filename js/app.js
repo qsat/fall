@@ -452,11 +452,11 @@ Puppet.prototype = {
 
   },
   out: function(y, stage){
-    var step = (y-3645),
-        frame = 18+ ( step /10 | 0 );
-    if(y < 3700) {
+    var step = (y-3665),
+        frame = 18+ ( step /9 | 0 );
+    if(y < 3730) {
       this.sprite.x = 460-(step);
-      this.sprite.y = 40+260 * Math.sin(step/18.5);
+      this.sprite.y = 40+260 * Math.sin(step/23);
     } else {
       this.sprite.x = 380;
       this.sprite.y = 100;
@@ -508,8 +508,8 @@ Puppet.prototype = {
         sB_02.alpha = 1;
         bB_02.x = sprite.x + 40;
         sB_02.x = sprite.x + 35;
-        bB_02.y = -(sprite.y / 1.1) + 230;
-        sB_02.y = -(sprite.y / 1.2) + 250;
+        bB_02.y = -(sprite.y / 0.9) + 230;
+        sB_02.y = -(sprite.y / 1.0) + 250;
       } else {
         bB_02.alpha = 0;
         sB_02.alpha = 0;
@@ -541,7 +541,7 @@ Puppet.prototype = {
 
       if(h < s.h) return;
 
-      if(y < 3390 || sprite.y < 600){
+      if(y < 3390 || sprite.y < 560){
         holl.y = h;
         g.clear();
         g.beginBitmapFill(img);
@@ -551,10 +551,10 @@ Puppet.prototype = {
       if(endFlg){
         if (y > 3390 ){
           holl.gotoAndStop(1);
-          holl.y = 510;
+          holl.y = 530;
         }
         g.beginBitmapFill(img);
-        g.drawRect (0,0, 60, 530);
+        g.drawRect (0,0, 60, 560);
       }
     }
   }
@@ -585,6 +585,9 @@ App.prototype = {
 var img = new Image();
 img.src="img/hole.png";
 
-app = new App();
+$(function(){
+  app = new App();
+});
+
 
 })(window, document, jQuery);
