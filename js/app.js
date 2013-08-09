@@ -10,6 +10,9 @@ uaIs = (function(){
   }
 })();
 
+
+var hideTopbar = function(){ setTimeout(scrollBy, 100, 0, 1); }
+
 var ScrollManager = function(){
   this.initialize();
 }
@@ -18,17 +21,12 @@ ScrollManager.prototype = {
   prev: 0,
 
   initialize: function(){
-    this.$win = $(window);
     
-    if(uaIs("iphone|andorid")) this.hideTopbar();
-    this.scrollInit();
-    this.hideTopbar();
-  },
+    if(uaIs("iphone|android")) hideTopbar();
+    else $('body').addClass("pc");
 
-  hideTopbar: function(){
-    window.addEventListener("load", function(){
-      setTimeout(scrollBy, 100, 0, 1);
-    }, false);
+    this.scrollInit();
+
   },
 
   scrollInit: function(){
@@ -64,7 +62,7 @@ ScrollManager.prototype = {
   },
 
   onScrollMove: function(y){
-    this.$win.trigger("scrollmove", {y: y, v: y-this.prev});
+    $window.trigger("scrollmove", {y: y, v: y-this.prev});
     this.scrollY = y;
     this.prev = y;
   },
@@ -116,7 +114,7 @@ CanvasManager.prototype = {
         this.stage.cname = "c"+i;
         this.stage.el = this;
       }
-      console.log(this.stage.cname, this.topY);
+      //console.log(this.stage.cname, this.topY);
       dict[this.stage.cname] = this.stage;
       return this.stage;
     });
@@ -394,13 +392,15 @@ Puppet.prototype = {
 ----------------------------------------ソン ↓
 */
 
-
-    if (this.sprite.y > 30) {
+    if (this.sprite.y > 25) {
+      var frame = (step-56) /6 | 0;
+      console.log(frame);
       this.sprite.gotoAndStop(10 + ( step /20 | 0 )%2);
+
       if(this.sprite.y > 158){
         this.water.x = this.sprite.x; 
         this.water.y = 245;
-        this.water.gotoAndStop(( step /8 | 0 )%6);
+        this.water.gotoAndStop(frame);
       }
     } else{
       this.water.gotoAndStop(-1);
@@ -471,7 +471,7 @@ Puppet.prototype = {
       this.drawSambaFunc(29);
     }
 
-    var opacity = ( step / 100);
+    var opacity = ( step / 80);
     if(app.kakao.css("opacity") <= 1) app.kakao.css({ 'opacity' : opacity <=1 ? opacity:1 });
 
   },
@@ -585,9 +585,8 @@ App.prototype = {
 var img = new Image();
 img.src="img/hole.png";
 
-$(function(){
+window.addEventListener("load", function(){
   app = new App();
-});
-
+}, false);
 
 })(window, document, jQuery);
