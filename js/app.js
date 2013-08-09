@@ -382,8 +382,8 @@ Puppet.prototype = {
 */
 
 
-    if (this.sprite.y > 138) {
-      this.sprite.gotoAndStop(10 + ( step /15 | 0 )%2);
+    if (this.sprite.y > 30) {
+      this.sprite.gotoAndStop(10 + ( step /20 | 0 )%2);
       if(this.sprite.y > 158){
         this.water.x = this.sprite.x; 
         this.water.y = 245;
@@ -457,7 +457,7 @@ Puppet.prototype = {
       this.drawSambaFunc(29);
     }
 
-    var opacity = ( step / 160);
+    var opacity = ( step / 100);
     opacity = opacity > 1 ? 1 : opacity;
     $('.kakao').css({
       'opacity' : opacity
