@@ -320,6 +320,8 @@ Puppet.prototype = {
       this.drawSambaFunc(29);
     }
 
+    if(! this.drawBubbleFunc) this.drawBubbleFunc = this.drawBubble();
+
 /*
 ----------------------------------------ソン ↑
 */
@@ -397,15 +399,16 @@ Puppet.prototype = {
 ----------------------------------------ソン ↑
 */
   },
-  swim:function(y){
+  swim:function(y, stage){
     var step = (y-1500)/3 | 0;
     step = step < 0 ? 0 : step;
 
     this.sprite.x =460; 
     this.sprite.y = -60 + step *4;
     this.sprite.gotoAndStop(13 + ( step /10 | 0 )%3);
+    this.drawBubbleFunc(this.sprite, y, stage);
   },
-  swim2: function(y){
+  swim2: function(y, stage){
     var y, step = (y-1855)/2 | 0;
     step = step < 0 ? 0 : step;
 
@@ -413,6 +416,8 @@ Puppet.prototype = {
     y = -60 + step *2.9;
     this.sprite.y = y > 267 ? 267 : y;
     this.sprite.gotoAndStop(13 + ( step /10 | 0 )%3);
+
+    this.drawBubbleFunc(this.sprite, y, stage);
   },
   swim3: function(y){
     var step = (y-2063+60)/3 | 0;
@@ -463,6 +468,28 @@ Puppet.prototype = {
       'opacity' : opacity
     });
 
+  },
+
+  drawBubble: function (){
+
+    var bB = new createjs.Bitmap('img/bubble_b.png');
+    var sB = new createjs.Bitmap('img/bubble_s.png');
+
+    return function (sprite, y, stage) {
+      
+      
+      if( sprite.y > 100){
+        // var bubble = bB.clone();
+        stage.addChild(bB);
+        stage.addChild(sB);
+        bB.y = 80 + -(y / 2);
+        sB.y = 100 + -(y / 2);
+        console.log(bB.y)
+      } else {
+        bB.x = sprite.x - 50;
+        sB.x = sprite.x - 60;
+      }
+    }
   },
 
   drawSamba: function (){
