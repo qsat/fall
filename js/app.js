@@ -315,6 +315,10 @@ Puppet.prototype = {
     }
     
     if(! this.drawHoleFunc) this.drawHoleFunc = this.drawHole();
+    if(! this.drawSambaFunc) {
+      this.drawSambaFunc = this.drawSamba();
+      this.drawSambaFunc(29);
+    }
 
 /*
 ----------------------------------------ソン ↑
@@ -443,15 +447,37 @@ Puppet.prototype = {
       this.sprite.y = 100;
     }
 
-    var samba = this.sprite.clone();
-    stage.addChild(samba);
-    samba.x = 320;
-    samba.y = 100;
-    samba.gotoAndStop(29);
-
     this.drawHoleFunc(this.holl, this.sprite);
     this.sprite.gotoAndStop(frame > 27 ? 27 : frame);
+
+    if( y > 3750 ) {
+      this.sprite.gotoAndStop(28);
+      this.drawSambaFunc(30);
+    } else {
+      this.drawSambaFunc(29);
+    }
+
+    var opacity = ( step / 160);
+    opacity = opacity > 1 ? 1 : opacity;
+    $('.kakao').css({
+      'opacity' : opacity
+    });
+
   },
+
+  drawSamba: function (){
+    var stage = app.canvasManager.dict["c7"];
+    var samba = this.sprite.clone();
+    stage.addChild(samba);
+    samba.x = 300;
+    samba.y = 100;
+
+    return function (num){
+      samba.gotoAndStop(num);
+    }
+    
+  },
+
   drawHole: function(){
     var g = new createjs.Graphics();
     var s = new createjs.Shape(g);

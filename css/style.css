@@ -196,3 +196,19 @@ canvas {
   height:0;
   clear:both;
 }
+
+/* kakao 
+--------------------------------------------------------------*/
+.kakao {
+  text-align: center;
+  margin-top: -220px;
+  opacity: 0;
+}
+.kakao p{
+  width: 273px;
+  margin: 0 auto;
+}
+.kakao img{
+  zoom:50%;
+  vertical-align: top;
+}
