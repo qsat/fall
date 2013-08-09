@@ -157,6 +157,7 @@ var Puppet = function(){
 }
 
 Puppet.prototype = {
+  prevY: 0,
   prevStage: null,
   onswitchedY: 0, //stageが切り替わったときのY
 
@@ -170,7 +171,7 @@ Puppet.prototype = {
 
   initialize: function(){
     this.puppet = this.puppetInit();
-    this.counter = this.digcounter(15, this.onUnderground);
+    this.counter = this.digcounter(10, this.onUnderground);
   },
 
   puppetInit: function(){
@@ -243,7 +244,7 @@ Puppet.prototype = {
 
     this.holl = new createjs.BitmapAnimation(hollSpriteSheet);
 
-    this.holl.gotoAndStop("holl");
+    this.holl.gotoAndStop(0);
     this.holl.x = 0;
     this.holl.y = 0;
 
@@ -262,7 +263,7 @@ Puppet.prototype = {
 
   animate: function(stage, obj){
     var
-      method,
+      method, divY=0,
       dict = app.canvasManager.dict,
       stages = stage.concat(),
       y = -obj.y;
@@ -294,46 +295,50 @@ Puppet.prototype = {
       case y < 2300 : method = "swim3";
         stage = dict["c5"];
         break;
-      case y < 3645 : method = "dig";
+      case y < 2500 : method = "dig";
         stage = dict["c6"];
+        divY = 2300;
+        break;
+      case y < 2750 : method = "dig";
+        stage = dict["c7"];
+        divY = 2500;
+        break;
+      case y < 3395 : method = "dig";
+        stage = dict["c8"];
+        divY = 2750;
+        break;
+      case y < 3665 : method = "dig";
+        stage = dict["c9"];
+        divY = 3395;
         break;
       case y < 6000 : method = "out";
-        stage = dict["c7"];
+        stage = dict["c10"];
         break;
       default       : method = "walk";     break;
     }
-/*
-----------------------------------------ソン ↓
-*/
-
-    if (method === "falling3") {
-      stage.addChild(this.water);
-    }
-
-    if (method === "dig") {
-      stage.addChildAt(this.holl, 0);
-    }
-    
-    if(! this.drawHoleFunc) this.drawHoleFunc = this.drawHole();
-    if(! this.drawSambaFunc) {
-      this.drawSambaFunc = this.drawSamba();
-      this.drawSambaFunc(29);
-    }
-
-/*
-----------------------------------------ソン ↑
-*/
-
-
 
     if(stage && this.prevStage != stage){
       stage.addChild(this.sprite);
-      this.onswitchedY = y;
+
+      if (method === "falling3") {
+        stage.addChild(this.water);
+      } else if (method === "dig") {
+        if(! stage.drawHole ) stage.drawHole = this.drawHole(stage, divY);
+        if(this.holl.currentFrame == 0) stage.addChild(this.holl);
+      } else if (method === "out") {
+        this.prevStage.drawHole(this.holl, this.sprite, true);
+      }
+
+      if(! this.drawSambaFunc) {
+        this.drawSambaFunc = this.drawSamba();
+        this.drawSambaFunc(29);
+      }
     }
     //console.log(y, method, dict);
 
-    this[method](y, stage);
+    this[method](y, stage, divY, y-this.prevY > 0);
     this.prevStage = stage;
+    this.prevY = y;
   },
 
   walk: function(y){
@@ -367,7 +372,7 @@ Puppet.prototype = {
 
     this.sprite.x =460; 
     this.sprite.y = -60 + step *2;
-    this.sprite.gotoAndStop(8 + ( step /15 | 0 )%2);
+    this.sprite.gotoAndStop(8 + ( step /10 | 0 )%2);
   },
   falling3: function(y){
     var step = (y-1200)/3 | 0;
@@ -426,13 +431,13 @@ Puppet.prototype = {
 
     this.counter();
   },
-  dig: function(y, stage){
-    var step = (y-2300)
+  dig: function(y, stage, divY, downward){
+    var step = (y-divY)
     this.sprite.x = 30;
     this.sprite.y = (-60 + 2*step);
     this.sprite.gotoAndStop(16+ ( step /20 | 0 )%2);
 
-    this.drawHoleFunc(this.holl, this.sprite);
+    if(downward) stage.drawHole(this.holl, this.sprite);
     this.holl.x = this.sprite.x;
 
   },
@@ -447,7 +452,6 @@ Puppet.prototype = {
       this.sprite.y = 100;
     }
 
-    this.drawHoleFunc(this.holl, this.sprite);
     this.sprite.gotoAndStop(frame > 27 ? 27 : frame);
 
     if( y > 3750 ) {
@@ -458,15 +462,12 @@ Puppet.prototype = {
     }
 
     var opacity = ( step / 100);
-    opacity = opacity > 1 ? 1 : opacity;
-    $('.kakao').css({
-      'opacity' : opacity
-    });
+    if(app.kakao.css("opacity") <= 1) app.kakao.css({ 'opacity' : opacity <=1 ? opacity:1 });
 
   },
 
   drawSamba: function (){
-    var stage = app.canvasManager.dict["c7"];
+    var stage = app.canvasManager.dict["c10"];
     var samba = this.sprite.clone();
     stage.addChild(samba);
     samba.x = 300;
@@ -478,24 +479,31 @@ Puppet.prototype = {
     
   },
 
-  drawHole: function(){
+  drawHole: function(stage, y){
     var g = new createjs.Graphics();
     var s = new createjs.Shape(g);
-    var stage = app.canvasManager.dict["c6"];
 
     stage.addChildAt(s, 0);
     
-    return function(holl, sprite){
-      if(sprite.y < 2540){
-        this.holl.gotoAndStop(0);
-        holl.y = sprite.y + 50;
+    return function(holl, sprite, endFlg){
+      var h = sprite.y + 50;
+
+      if(h < s.h) return;
+
+      if(y < 3390 || sprite.y < 600){
+        holl.y = h;
+        g.clear();
         g.beginBitmapFill(img);
-        g.drawRect (0,0, 60, sprite.y + 50);
-      } else {
-        this.holl.gotoAndStop(1);
-        holl.y = 2590;
+        g.drawRect (0,0, 60, h);
+        s.h = h;
+      }
+      if(endFlg){
+        if (y > 3390 ){
+          holl.gotoAndStop(1);
+          holl.y = 510;
+        }
         g.beginBitmapFill(img);
-        g.drawRect (0,0, 60, 2590);
+        g.drawRect (0,0, 60, 530);
       }
     }
   }
@@ -517,6 +525,8 @@ App.prototype = {
     this.scrollManager = scrollManager;
     this.canvasManager = canvasManager;
     this.puppet = puppet;
+
+    this.kakao = $('.kakao');
   }
 
 }
