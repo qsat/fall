@@ -443,10 +443,10 @@ Puppet.prototype = {
   },
   out: function(y, stage){
     var step = (y-3665),
-        frame = 18+ ( step /10 | 0 );
-    if(y < 3700) {
+        frame = 18+ ( step /9 | 0 );
+    if(y < 3730) {
       this.sprite.x = 460-(step);
-      this.sprite.y = 40+260 * Math.sin(step/18.5);
+      this.sprite.y = 40+260 * Math.sin(step/23);
     } else {
       this.sprite.x = 380;
       this.sprite.y = 100;
@@ -534,6 +534,9 @@ App.prototype = {
 var img = new Image();
 img.src="img/hole.png";
 
-app = new App();
+$(function(){
+  app = new App();
+});
+
 
 })(window, document, jQuery);
