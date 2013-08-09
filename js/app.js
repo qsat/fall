@@ -442,7 +442,7 @@ Puppet.prototype = {
 
   },
   out: function(y, stage){
-    var step = (y-3645),
+    var step = (y-3665),
         frame = 18+ ( step /10 | 0 );
     if(y < 3700) {
       this.sprite.x = 460-(step);
@@ -490,7 +490,7 @@ Puppet.prototype = {
 
       if(h < s.h) return;
 
-      if(y < 3390 || sprite.y < 600){
+      if(y < 3390 || sprite.y < 560){
         holl.y = h;
         g.clear();
         g.beginBitmapFill(img);
@@ -500,10 +500,10 @@ Puppet.prototype = {
       if(endFlg){
         if (y > 3390 ){
           holl.gotoAndStop(1);
-          holl.y = 510;
+          holl.y = 530;
         }
         g.beginBitmapFill(img);
-        g.drawRect (0,0, 60, 530);
+        g.drawRect (0,0, 60, 560);
       }
     }
   }
