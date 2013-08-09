@@ -357,7 +357,7 @@ Puppet.prototype = {
     var step = (y-130)/3 | 0;
     step = step < 0 ? 0 : step;
 
-    this.sprite.x =430; 
+    this.sprite.x =460; 
     this.sprite.y = -60 + step *2;
     this.sprite.gotoAndStop(8);
   },
@@ -365,7 +365,7 @@ Puppet.prototype = {
     var step = (y-600)/3 | 0;
     step = step < 0 ? 0 : step;
 
-    this.sprite.x =430; 
+    this.sprite.x =460; 
     this.sprite.y = -60 + step *2;
     this.sprite.gotoAndStop(8 + ( step /15 | 0 )%2);
   },
@@ -373,7 +373,7 @@ Puppet.prototype = {
     var step = (y-1200)/3 | 0;
     step = step < 0 ? 0 : step;
 
-    this.sprite.x =430; 
+    this.sprite.x =460; 
     this.sprite.y = -60 + step *4;
     this.sprite.gotoAndStop(8 + ( step /15 | 0 )%2);
 
@@ -401,7 +401,7 @@ Puppet.prototype = {
     var step = (y-1500)/3 | 0;
     step = step < 0 ? 0 : step;
 
-    this.sprite.x =430; 
+    this.sprite.x =460; 
     this.sprite.y = -60 + step *4;
     this.sprite.gotoAndStop(13 + ( step /10 | 0 )%3);
   },
@@ -409,7 +409,7 @@ Puppet.prototype = {
     var y, step = (y-1855)/2 | 0;
     step = step < 0 ? 0 : step;
 
-    this.sprite.x =430; 
+    this.sprite.x =460; 
     y = -60 + step *2.9;
     this.sprite.y = y > 267 ? 267 : y;
     this.sprite.gotoAndStop(13 + ( step /10 | 0 )%3);
@@ -418,7 +418,7 @@ Puppet.prototype = {
     var step = (y-2063+60)/3 | 0;
     step = step < 0 ? 0 : step;
 
-    this.sprite.x =430; 
+    this.sprite.x =460; 
     this.sprite.y = 267;
 
     if(y > 2240) this.sprite.y = 4*step;
@@ -489,13 +489,11 @@ Puppet.prototype = {
       if(sprite.y < 2540){
         this.holl.gotoAndStop(0);
         holl.y = sprite.y + 50;
-        g.clear();
         g.beginBitmapFill(img);
         g.drawRect (0,0, 60, sprite.y + 50);
       } else {
         this.holl.gotoAndStop(1);
         holl.y = 2590;
-        g.clear();
         g.beginBitmapFill(img);
         g.drawRect (0,0, 60, 2590);
       }
