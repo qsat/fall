@@ -152,8 +152,20 @@ img {
   top: 2234px;
 }
 
-.bnr.bnr07{
+.bnr.bnr070{
   top: 2563px;
+  left: 215px;
+}
+.bnr.bnr071{
+  top: 2745px;
+  left: 215px;
+}
+.bnr.bnr072{
+  top: 3000px;
+  left: 215px;
+}
+.bnr.bnr073{
+  top: 3600px;
   left: 215px;
 }
 
@@ -201,7 +213,6 @@ canvas {
 --------------------------------------------------------------*/
 .kakao {
   text-align: center;
-  margin-top: -220px;
   opacity: 0;
 }
 .kakao p{
