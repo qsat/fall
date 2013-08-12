@@ -71,13 +71,12 @@ ScrollManager.prototype = {
 }
 
 ScrollManager.contentHeight = (function(){
-  var h = 444;
+  var h = 504;
 
   if(uaIs("iphone|andorid")) {
     h = $window.height();
     h = h > 444 ? 504 : 504;
   }
-
   return h;
 })();
 
