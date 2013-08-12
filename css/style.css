@@ -220,6 +220,6 @@ canvas {
   margin: 0 auto;
 }
 .kakao img{
-  zoom:50%;
+  width: 100%;
   vertical-align: top;
 }
